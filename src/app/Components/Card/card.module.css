@@ -1,0 +1,29 @@
+.Container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.Attributes{
+    display: grid;
+    grid-template-columns: 200px 200px 200px 200px;
+    padding-top: 2%;
+}
+.TeamCard{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, max-content);
+    flex-direction: row;
+}
+.Team{
+    border: solid;
+    margin-left: 10%;
+    border-width: 0.1cap;
+
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 80px);
+    gap: 10px;
+    grid-auto-flow: row;
+   
+    
+}
