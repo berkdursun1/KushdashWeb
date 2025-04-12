@@ -22,7 +22,7 @@ import { Dispatch, SetStateAction } from "react"
 
 
 
-export function ComboboxDemo({players, setSelectedPlayer} : {players : never[], setSelectedPlayer: Dispatch<SetStateAction<string>>}) {
+export function ComboboxDemo({players, setSelectedPlayer, isSucceed} : {players : never[], setSelectedPlayer: Dispatch<SetStateAction<string>>, isSucceed: boolean}) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
   return (
@@ -33,6 +33,7 @@ export function ComboboxDemo({players, setSelectedPlayer} : {players : never[], 
           role="combobox"
           aria-expanded={open}
           className="w-[200px] justify-between"
+          disabled={isSucceed}
         >
           {value
             ? players.find((players) => players.name === value)?.name

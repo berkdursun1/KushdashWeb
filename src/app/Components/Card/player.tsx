@@ -1,29 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import Styles from './card.module.css'
-import TeamComponent from '../TeamComponent'
-import { GuessResponse } from '@/app/models/guessResponse'
-import { ArrowUp } from '@mynaui/icons-react'
+import { GuessedPlayer} from '@/app/models/guessResponse'
 
-const player = ({guessResponse} : {guessResponse: GuessResponse}) => {
+const player = ({guessResponse, minAgeRange = null, maxAgeRange = null} : {guessResponse: GuessedPlayer, minAgeRange: number | null, maxAgeRange: number | null}) => {
+  const imageUrl = "https://img.a.transfermarkt.technology/portrait/header/28396-1728391796.JPG?lm=1";
   return (
-    <div className={Styles.Container}>
-      <Image src={`/alex.jpeg`} width={700} height={700} alt="Picture" ></Image>
-      <div className={Styles.Attributes}>
-      <div>
-      <input className="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-pink-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" placeholder="Name "/>
-      <ArrowUp />
-      </div>
-      <input className="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-pink-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" placeholder={guessResponse.age === 1 ? "Up" : "Down"} />
-      <input className="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-pink-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" placeholder="Position "/>
-      <input className="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-pink-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" placeholder="Foot "/>
-      <input className="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-pink-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" placeholder="Nationality "/>
-      <input className="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-pink-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" placeholder="Goal "/>
-      <input className="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-pink-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" placeholder="Assist "/>
-      <input className="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-pink-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50" placeholder="Match "/>
-      {/* <TeamComponent></TeamComponent> */}
+    <div className={Styles.playerCard}>
+    {guessResponse.imageUrl !== null ? <img src={guessResponse.imageUrl} className={Styles.playerPhoto} /> : <div className={Styles.nullPlayerPhoto}><label>?</label></div>}
+    <div className={Styles.playerInfo}>
+      <h2 className={Styles.playerName}>{guessResponse.name ?? "?"}</h2>
+      <p className={Styles.playerPosition}>{guessResponse.position ?? "?"} • {guessResponse.foot ?? "?"}</p>
+      <div className={Styles.playerStats}>
+        <div><strong>Age:</strong> 32</div>
+        <div><strong>Goals:</strong> 10</div>
+        <div><strong>Assists:</strong> 5</div>
+        <div><strong>Matches:</strong> 38</div>
       </div>
     </div>
+</div>
     
   )
 }
