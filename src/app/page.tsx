@@ -5,32 +5,43 @@ import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { SelectContent, SelectItem } from '@radix-ui/react-select';
 import { ComboboxDemo } from './Components/ComboBox';
-import { Guess, GuessedPlayer, GuessResponse } from './models/guessResponse';
+import { Guess, GuessedPlayer, GuessResponse, GuessTips } from './models/guessResponse';
 
 const API_URL = "https://localhost:7122/TransferMarkt/";
 
 export default function Home() {
+  const [realPlayerId, setRealPlayerId] = useState(0);
   const [players, setPlayers] = useState([]);
   const [showDropDown, setShowDropDown] = useState(false);
   const [isSucceed, setIsSucceed] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState("")
+  const [guessTips, setGuessTips] = useState<GuessTips>({
+    minAge: null,
+    maxAge: null,
+    minGoal: null,
+    maxGoal: null,
+    minAsist: null,
+    maxAsist: null,    
+  })
   const [minAgeRange, setMinAgeRange] = useState(null);
   const [maxAgeRange, setMaxAgeRange] = useState(null);
   const [guessedPlayers, setGuessPlayers] = useState<GuessResponse[]>([]);
   const [realPlayer, setRealPlayer] = useState<GuessedPlayer>({
-    age: 0,
+    age: null,
     foot: null,
     imageUrl: null,
     name: null,
     nationality: [""],
-    position: null
+    position: null,
+    teams:[""],
   });
   const [guess, setGuess] = useState<GuessResponse>({
     guessed: {
       age: 0,
       foot: false,
       nationality: false,
-      position:false
+      position:false,
+      teams: [""]
     },
     guessedPlayer: {
       age: 0,
@@ -38,7 +49,8 @@ export default function Home() {
       position: "Position",
       foot: "Foot",
       nationality: [],
-      imageUrl: ""
+      imageUrl: "",
+      teams: [""]
     }
   });
 
@@ -57,20 +69,19 @@ export default function Home() {
       const response = await fetch(`${API_URL}Guess?playerId=${playerId}&index=${index}`);
       const data = await response.json();
       setGuess(data);
-      console.log("data")
-      console.log(data);
     }
     if(selectedPlayer !== ""){
       const selectedPlayerToGuess = players.find(obj => obj.name === selectedPlayer)
       if(selectedPlayerToGuess){
-        GuessApi(selectedPlayerToGuess.id, 3);
-        
-        console.log("guess response returned")
-        console.log(guessedPlayers);
+        GuessApi(selectedPlayerToGuess.id, realPlayerId);
       }
     }  
   }, [selectedPlayer])
   
+  useEffect(() => {
+    setRealPlayerId(Math.floor(Math.random() * (players.length - 0 + 1) + 0));
+  },[players])
+
   useEffect(() => {
     if(guess.guessedPlayer.name !== ""){
       setGuessPlayers(prevGuesses => [...prevGuesses, guess]);
@@ -89,14 +100,20 @@ export default function Home() {
       if(guess.guessed.age === 1){
         // Lower age guessed
         if(minAgeRange === null || minAgeRange < guess.guessedPlayer.age){
-          setMinAgeRange(guess.guessedPlayer.age);
+          setGuessTips(prev => ({
+            ...prev,
+            minAge: guess.guessedPlayer.age
+          }));
         }
         
       }
       else if(guess.guessed.age === 2){
         // Bigger age guessed
         if(maxAgeRange === null || maxAgeRange > guess.guessedPlayer.age){
-          setMaxAgeRange(guess.guessedPlayer.age);
+          setGuessTips(prev => ({
+            ...prev,
+            maxAge: guess.guessedPlayer.age
+          }));
         }
       }
 
@@ -107,7 +124,7 @@ export default function Home() {
 
   return (
         <div className="container">
-          <Player guessResponse={realPlayer} minAgeRange={minAgeRange} maxAgeRange={maxAgeRange}></Player>
+          <Player guessResponse={realPlayer} guessTips={guessTips}></Player>
           <div className='submit'>
             <div className='dropdown'>
             <ComboboxDemo players = {players} setSelectedPlayer={setSelectedPlayer} isSucceed={isSucceed}></ComboboxDemo>

@@ -1,54 +1,3 @@
-.Container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
-    border-radius: 1%;
-}
-.Attributes{
-    display: grid;
-    grid-template-columns: 200px 200px 200px ;
-    padding-top: 2%;
-}
-.TeamCard{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, max-content);
-    flex-direction: row;
-}
-.Team{
-    border: solid;
-    margin-left: 10%;
-    border-width: 0.1cap;
-
-}
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 80px);
-    gap: 10px;
-    grid-auto-flow: row;
-   
-    
-}
-.CustomDiv {
-  height: 2rem;
-  width: 100%;
-  border-radius: 7px;
-  border: 1px solid #cbd5e1; /* border-blue-gray-200 */
-  background-color: yellow;
-  padding: 10px 12px; /* px-3 py-2.5 */
-  font-family: sans-serif;
-  margin-top: 5%;
-  justify-content: space-between;
-  align-items: center;
-  display: flex;
-}
-.CustomDiv:empty::before {
-    content: attr(data-placeholder);
-    color: #a0a0a0;
-    pointer-events: none;
-    position: absolute;
-  }
-
   .playerCard {
     display: flex;
     background-color: #fff;
@@ -94,6 +43,13 @@
   
   .playerStats {
     margin: 10px 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    font-size: 0.9em;
+  }
+
+  .teams{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
