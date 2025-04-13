@@ -3,55 +3,22 @@ import './globals.css';
 import Player from "./Components/Card/player";
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
-import { SelectContent, SelectItem } from '@radix-ui/react-select';
 import { ComboboxDemo } from './Components/ComboBox';
-import { Guess, GuessedPlayer, GuessResponse, GuessTips } from './models/guessResponse';
+import { Guess, GuessedPlayer, GuessResponse, GuessTips, InitialGuess, InitialGuessedPlayer, InitialGuessTips, InitialRealPlayer } from './models/guessResponse';
 
 const API_URL = "https://localhost:7122/TransferMarkt/";
 
 export default function Home() {
   const [realPlayerId, setRealPlayerId] = useState(0);
   const [players, setPlayers] = useState([]);
-  const [showDropDown, setShowDropDown] = useState(false);
   const [isSucceed, setIsSucceed] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState("")
-  const [guessTips, setGuessTips] = useState<GuessTips>({
-    minAge: null,
-    maxAge: null,
-    minGoal: null,
-    maxGoal: null,
-    minAsist: null,
-    maxAsist: null,    
-  })
-  const [minAgeRange, setMinAgeRange] = useState(null);
-  const [maxAgeRange, setMaxAgeRange] = useState(null);
+  const [guessTips, setGuessTips] = useState<GuessTips>(InitialGuessTips)
   const [guessedPlayers, setGuessPlayers] = useState<GuessResponse[]>([]);
-  const [realPlayer, setRealPlayer] = useState<GuessedPlayer>({
-    age: null,
-    foot: null,
-    imageUrl: null,
-    name: null,
-    nationality: [""],
-    position: null,
-    teams:[""],
-  });
+  const [realPlayer, setRealPlayer] = useState<GuessedPlayer>(InitialRealPlayer);
   const [guess, setGuess] = useState<GuessResponse>({
-    guessed: {
-      age: 0,
-      foot: false,
-      nationality: false,
-      position:false,
-      teams: [""]
-    },
-    guessedPlayer: {
-      age: 0,
-      name: "",
-      position: "Position",
-      foot: "Foot",
-      nationality: [],
-      imageUrl: "",
-      teams: [""]
-    }
+    guessed: InitialGuess,
+    guessedPlayer: InitialGuessedPlayer
   });
 
   useEffect(() => {
@@ -79,7 +46,7 @@ export default function Home() {
   }, [selectedPlayer])
   
   useEffect(() => {
-    setRealPlayerId(Math.floor(Math.random() * (players.length - 0 + 1) + 0));
+    setRealPlayerId(Math.floor(Math.random() * (players.length - 0 + 1) + 1));
   },[players])
 
   useEffect(() => {
@@ -94,33 +61,65 @@ export default function Home() {
         foot: guess.guessed.foot ? guess.guessedPlayer.foot : realPlayer.foot,
         imageUrl: isSuccess ? guess.guessedPlayer.imageUrl : realPlayer.imageUrl,
         name: isSuccess ? guess.guessedPlayer.name : realPlayer.name,
-        nationality: isSuccess ? guess.guessedPlayer.nationality : realPlayer.nationality  
+        nationality: isSuccess ? guess.guessedPlayer.nationality : realPlayer.nationality,
+        matchs: guess.guessed.matchs === 0 ? guess.guessedPlayer.matchs : realPlayer.matchs,
+        scores: guess.guessed.scores === 0 ? guess.guessedPlayer.scores : realPlayer.scores,
+        asists: guess.guessed.asists === 0 ? guess.guessedPlayer.assists : realPlayer.assists
       }))
+      setGuessTips(prev => {
+        const { guessed, guessedPlayer } = guess;
       
-      if(guess.guessed.age === 1){
-        // Lower age guessed
-        if(minAgeRange === null || minAgeRange < guess.guessedPlayer.age){
-          setGuessTips(prev => ({
-            ...prev,
-            minAge: guess.guessedPlayer.age
-          }));
-        }
-        
-      }
-      else if(guess.guessed.age === 2){
-        // Bigger age guessed
-        if(maxAgeRange === null || maxAgeRange > guess.guessedPlayer.age){
-          setGuessTips(prev => ({
-            ...prev,
-            maxAge: guess.guessedPlayer.age
-          }));
-        }
-      }
+        const minAge = (guessed.age === 1) ? (prev.minAge != null && guessedPlayer.age != null && prev.minAge < guessedPlayer.age)
+          ? guessedPlayer.age : (prev.minAge == null ? guess.guessedPlayer.age : prev.minAge)
+          : prev.minAge;
+      
+        const maxAge = (guessed.age === 2) ?  (prev.maxAge != null && guessedPlayer.age != null && prev.maxAge > guessedPlayer.age)
+          ? guessedPlayer.age : (prev.maxAge == null ? guess.guessedPlayer.age : prev.maxAge)
+          : prev.maxAge;
+      
+        const minMatchs = (guessed.matchs == 1) ? (prev.minMatchs != null && guessedPlayer.matchs != null && prev.minMatchs < guessedPlayer.matchs)
+          ? guessedPlayer.matchs : (prev.minMatchs == null ? guess.guessedPlayer.matchs : prev.minMatchs)
+          : prev.minMatchs;
+      
+        const maxMatchs = (guessed.matchs == 2) ? (prev.maxMatchs != null && guessedPlayer.matchs != null && prev.maxMatchs > guessedPlayer.matchs)
+          ? guessedPlayer.matchs : (prev.maxMatchs == null ? guess.guessedPlayer.matchs : prev.maxMatchs)
+          : prev.maxMatchs;
+      
+        const minGoal = (guessed.scores == 1) ? (prev.minGoal != null && guessedPlayer.scores != null && prev.minGoal < guessedPlayer.scores)
+          ? guessedPlayer.scores : (prev.minGoal == null ? guess.guessedPlayer.scores : prev.minGoal)
+          : prev.minGoal;
+
+        const maxGoal = (guessed.scores == 2) ? (prev.maxGoal != null && guessedPlayer.scores != null && prev.maxGoal > guessedPlayer.scores)
+          ? guessedPlayer.scores : (prev.maxGoal == null ? guess.guessedPlayer.scores : prev.maxGoal)
+          : prev.maxGoal;  
+
+          const minAsist = (guessed.asists == 1) ? (prev.minAsist != null && guessedPlayer.asists != null && prev.minAsist < guessedPlayer.asists)
+          ? guessedPlayer.asists : (prev.minAsist == null ? guess.guessedPlayer.asists : prev.minAsist)
+          : prev.minAsist;
+
+        const maxAsist = (guessed.asists == 2) ? (prev.maxAsist != null && guessedPlayer.asists != null && prev.maxAsist > guessedPlayer.asists)
+          ? guessedPlayer.asists : (prev.maxAsist == null ? guess.guessedPlayer.asists : prev.maxAsist)
+          : prev.maxAsist; 
+
+        return {
+          ...prev,
+          minAge,
+          maxAge,
+          minMatchs,
+          maxMatchs,
+          minGoal,
+          maxGoal,
+          minAsist,
+          maxAsist
+        };
+      });
 
 
 
     }
   }, [guess])
+
+  
 
   return (
         <div className="container">
@@ -136,6 +135,11 @@ export default function Home() {
           {guessedPlayers.map((guess) => {
             console.log("sended guess");
             console.log(guess);
+            console.log("sended guess tips");
+            console.log(guessTips);
+            console.log("REAL Player")
+            console.log(realPlayer)
+
             return(
             <Player guessResponse={guess.guessedPlayer}></Player>
           )})}

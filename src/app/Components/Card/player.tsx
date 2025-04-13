@@ -13,9 +13,9 @@ const player = ({guessResponse, guessTips=null} : {guessResponse: GuessedPlayer,
       <p className={Styles.playerPosition}>{guessResponse.position ?? "?"} • {guessResponse.foot ?? "?"}</p>
       <div className={Styles.playerStats}>
         <div><strong>Age:</strong>{guessResponse.age ?? <label>({guessTips?.minAge ?? "?"}-{guessTips?.maxAge ?? "?"})</label>}</div>
-        <div><strong>Goals:</strong> 10</div>
-        <div><strong>Assists:</strong> 5</div>
-        <div><strong>Matches:</strong> 38</div>
+        <div><strong>Goals:</strong>{guessResponse.scores ?? <label>({guessTips?.minGoal ?? "?"}-{guessTips?.maxGoal ?? "?"})</label>}</div>
+        <div><strong>Assists:</strong>{guessResponse.asists ?? <label>({guessTips?.minAsist ?? "?"}-{guessTips?.maxAsist ?? "?"})</label>}</div>
+        <div><strong>Matches:</strong>{guessResponse.matchs ?? <label>({guessTips?.minMatchs ?? "?"}-{guessTips?.maxMatchs ?? "?"})</label>}</div>
       </div>
       <div className={Styles.teams}>
         {guessResponse.teams.map(team => {return(<div>{team}</div>)})}
