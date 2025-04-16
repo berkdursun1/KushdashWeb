@@ -48,12 +48,105 @@
   flex-direction: column;
   align-items: center;
 }
-
-.submit{
-  display: inline-flex;
+.rowPlayers {
+  display: grid;
   flex-direction: row;
-  justify-content: space-between;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
 }
+
+.submit {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 8px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 229, 0, 0.15);
+}
+
+select {
+  appearance: none;
+  background: linear-gradient(135deg, rgba(4, 30, 66, 0.95) 0%, rgba(10, 40, 80, 0.95) 100%);
+  border: 1px solid rgba(255, 229, 0, 0.3);
+  border-radius: 6px;
+  color: #FFFFFF;
+  padding: 10px 36px 10px 16px;
+  font-size: 0.95em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23FFE500' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+select:hover, select:focus {
+  border-color: #FFE500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, rgba(4, 30, 66, 1) 0%, rgba(10, 40, 80, 1) 100%);
+}
+
+select:focus {
+  outline: none;
+  border-color: #FFE500;
+  box-shadow: 0 0 0 2px rgba(255, 229, 0, 0.2);
+}
+
+select option {
+  background-color: #041E42;
+  color: #FFFFFF;
+  padding: 8px;
+}
+
+button {
+  background: linear-gradient(135deg, #FFE500 0%, #FFD700 100%);
+  color: #041E42;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2), transparent 70%);
+  transform: rotate(45deg);
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #FFD700 0%, #FFE500 100%);
+}
+
+button:hover::before {
+  opacity: 1;
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
 .dropdown{
   display: flex;
   flex-direction: column;
@@ -108,6 +201,110 @@
   --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
   --sidebar-border: oklch(0.923 0.003 48.717);
   --sidebar-ring: oklch(0.709 0.01 56.259);
+  --background-start: #041E42;
+  --background-mid: #0A2850;
+  --background-end: #0F3366;
+  --accent-yellow: #FFE500;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--background-start), var(--background-mid) 50%, var(--background-end));
+  color: #FFFFFF;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 10% 10%, rgba(255, 229, 0, 0.03), transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(255, 229, 0, 0.03), transparent 40%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415L51.8 0h2.827zM5.373 0l-.83.828L5.96 2.243 8.2 0H5.374zM48.97 0l3.657 3.657-1.414 1.414L46.143 0h2.828zM11.03 0L7.372 3.657 8.787 5.07 13.857 0H11.03zm32.284 0L49.8 6.485 48.384 7.9l-7.9-7.9h2.83zM16.686 0L10.2 6.485 11.616 7.9l7.9-7.9h-2.83zM22.343 0L13.857 8.485 15.272 9.9l7.9-7.9h-.83zm5.657 0L19.514 8.485 20.93 9.9l8.485-8.485h-1.415zM32.372 0L26.1 6.272 27.515 7.687 33.787 1.415 32.37 0z' fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+  z-index: -1;
+  pointer-events: none;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 2rem;
+  position: relative;
+}
+
+main::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(4, 30, 66, 0.3)
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Animasyonlu parıltı efekti */
+@keyframes shine {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.shine-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 229, 0, 0.2),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shine 8s linear infinite;
+  z-index: 1;
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+  main {
+    padding: 1rem;
+  }
+
+  .submit {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  select {
+    width: 100%;
+    min-width: unset;
+  }
+
+  button {
+    width: 100%;
+  }
 }
 
 .dark {
@@ -150,5 +347,129 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Dropdown menü ve arama alanı stilleri */
+.dropdown-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: linear-gradient(135deg, rgba(4, 30, 66, 0.98) 0%, rgba(10, 40, 80, 0.98) 100%);
+  border: 1px solid rgba(255, 229, 0, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.dropdown-menu::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: rgba(255, 229, 0, 0.2);
+  border-radius: 4px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 229, 0, 0.3);
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 229, 0, 0.2);
+  border-radius: 6px 6px 0 0;
+  color: #FFFFFF;
+  font-size: 0.95em;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #FFE500;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.player-option {
+  padding: 10px 16px;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  border-left: 3px solid transparent;
+}
+
+.player-option:hover {
+  background: linear-gradient(90deg, rgba(255, 229, 0, 0.1), rgba(255, 229, 0, 0.02));
+  border-left-color: #FFE500;
+}
+
+.player-option:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.player-option.selected {
+  background: linear-gradient(90deg, rgba(255, 229, 0, 0.15), rgba(255, 229, 0, 0.05));
+  border-left-color: #FFE500;
+  font-weight: 500;
+}
+
+/* Dropdown ok ikonu */
+.dropdown-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #FFE500;
+}
+
+/* Mobil görünüm için düzenlemeler */
+@media (max-width: 768px) {
+  .dropdown-container {
+    max-width: 100%;
+  }
+
+  .dropdown-menu {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 16px;
+    max-height: 60vh;
+    border-radius: 12px;
+  }
+
+  .search-input {
+    padding: 14px 16px;
+    font-size: 1em;
+  }
+
+  .player-option {
+    padding: 12px 16px;
+    font-size: 1em;
   }
 }

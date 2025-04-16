@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
 };
 // next.config.js
 module.exports = {
+  output: 'export',
   images: {
     domains: ['img.a.transfermarkt.technology'],
   },

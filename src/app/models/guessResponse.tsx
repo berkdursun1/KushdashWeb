@@ -24,6 +24,10 @@ export type GuessResponse = {
     guessed: Guess;
     guessedPlayer: GuessedPlayer;
 }
+export type PlayerSummary = {
+    id:number;
+    name:string;
+}
 export type GuessTips = {
     minAge: number | null;
     maxAge: number | null;
@@ -53,7 +57,7 @@ export const InitialGuessedPlayer : GuessedPlayer = {
     foot: "Foot",
     nationality: [],
     imageUrl: "",
-    teams: [""],
+    teams: [],
     matchs: null,
     scores: null,
     asists: null
@@ -64,7 +68,7 @@ export const InitialGuess : Guess = {
     foot: false,
     nationality: false,
     position:false,
-    teams: [""],
+    teams: [],
     matchs: 0,
     scores: 0,
     asists: 0
@@ -77,8 +81,12 @@ export const InitialRealPlayer: GuessedPlayer = {
     name: null,
     nationality: [""],
     position: null,
-    teams:[""],
+    teams:[],
     matchs: null,
     asists: null,
     scores: null
+}
+
+export function isEqualPlayers(guess: Guess){
+    return guess.age === 0 && guess.foot && guess.nationality && guess.position;
 }

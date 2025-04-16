@@ -4,13 +4,13 @@ import Player from "./Components/Card/player";
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { ComboboxDemo } from './Components/ComboBox';
-import { Guess, GuessedPlayer, GuessResponse, GuessTips, InitialGuess, InitialGuessedPlayer, InitialGuessTips, InitialRealPlayer } from './models/guessResponse';
+import { GuessedPlayer, GuessResponse, GuessTips, InitialGuess, InitialGuessedPlayer, InitialGuessTips, InitialRealPlayer, isEqualPlayers, PlayerSummary } from './models/guessResponse';
 
 const API_URL = "https://localhost:7122/TransferMarkt/";
 
 export default function Home() {
   const [realPlayerId, setRealPlayerId] = useState(0);
-  const [players, setPlayers] = useState([]);
+  const [players, setPlayers] = useState<PlayerSummary[]>([]);
   const [isSucceed, setIsSucceed] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState("")
   const [guessTips, setGuessTips] = useState<GuessTips>(InitialGuessTips)
@@ -64,7 +64,7 @@ export default function Home() {
         nationality: isSuccess ? guess.guessedPlayer.nationality : realPlayer.nationality,
         matchs: guess.guessed.matchs === 0 ? guess.guessedPlayer.matchs : realPlayer.matchs,
         scores: guess.guessed.scores === 0 ? guess.guessedPlayer.scores : realPlayer.scores,
-        asists: guess.guessed.asists === 0 ? guess.guessedPlayer.assists : realPlayer.assists
+        asists: guess.guessed.asists === 0 ? guess.guessedPlayer.asists : realPlayer.asists
       }))
       setGuessTips(prev => {
         const { guessed, guessedPlayer } = guess;
@@ -124,6 +124,7 @@ export default function Home() {
   return (
         <div className="container">
           <Player guessResponse={realPlayer} guessTips={guessTips}></Player>
+          
           <div className='submit'>
             <div className='dropdown'>
             <ComboboxDemo players = {players} setSelectedPlayer={setSelectedPlayer} isSucceed={isSucceed}></ComboboxDemo>
@@ -132,17 +133,12 @@ export default function Home() {
             Give up
           </Button>
           </div>
-          {guessedPlayers.map((guess) => {
-            console.log("sended guess");
-            console.log(guess);
-            console.log("sended guess tips");
-            console.log(guessTips);
-            console.log("REAL Player")
-            console.log(realPlayer)
-
+          <div className='rowPlayers'>
+          {guessedPlayers.map((guess, index) => {
             return(
-            <Player guessResponse={guess.guessedPlayer}></Player>
+            <Player key={index} guessTips={null} guessResponse={guess.guessedPlayer}></Player>
           )})}
+          </div>
           
       </div>
       
@@ -150,6 +146,4 @@ export default function Home() {
 }
 
 
-export function isEqualPlayers(guess: Guess){
-  return guess.age === 0 && guess.foot && guess.nationality && guess.position;
-}
+
