@@ -73,6 +73,7 @@ export default function Home() {
   
   useEffect(() => {
     setRealPlayerId(Math.floor(Math.random() * (players.length - 0 + 1) + 1));
+    setGuessPlayers([]);
     // When the players is received successfully.
     const InitialGuess = async (team_id: number) => {
       const response = await fetch(`${API_URL}InitialGuess?index=${realPlayerId}&team=${team_id}`);
@@ -83,18 +84,24 @@ export default function Home() {
   },[players])
 
   useEffect(() => {
+    // If the player is found
+    if(isSucceed){
+      setPlayers(team === "Fenerbahce" ? fenerPlayers : besiktasPlayers);
+      setScore(score + 1);
+      setRemain(INITIAL_GUESS_COUNT);
+    }
+
+
+  }, [isSucceed])
+
+  useEffect(() => {
     if(guess.guessedPlayer.name !== ""){
       setGuessPlayers(prevGuesses => [guess, ...prevGuesses]);
       const isSuccess = isEqualPlayers(guess.guessed);
       if(isSuccess){
-        setScore(score + 1);
-      }
-      else{
-      if(guess.guessedPlayer.age != 0){
         setRemain(remain - 1);
-
       }
-    }
+      
       setIsSucceed(isSuccess)
       
       setRealPlayer(prev => ({
@@ -173,7 +180,7 @@ export default function Home() {
         <Player guessResponse={realPlayer} guessTips={guessTips} remainingGuesses={remain} correctGuesses={score}></Player>
         <div className='submit'>
           <div className='dropdown'>
-            <ComboboxDemo players={players} setSelectedPlayer={setSelectedPlayer} isSucceed={(isSucceed) || (remain <= 0)}></ComboboxDemo>
+            <ComboboxDemo players={players} setSelectedPlayer={setSelectedPlayer} isSucceed={(remain <= 0)}></ComboboxDemo>
           </div>
           <Button className="bg-blue-900 text-yellow-300 hover:bg-blue-800">Give up</Button>
         </div>
