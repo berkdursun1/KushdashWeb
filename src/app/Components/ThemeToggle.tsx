@@ -1,7 +1,7 @@
 'use client';
 
 import { useTheme } from '../context/ThemeContext';
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export default function ThemeToggle({isFenerMode} : {isFenerMode: (value: string | ((prev: string) => string)) => void}) {
   const { isDarkMode, toggleTheme } = useTheme();

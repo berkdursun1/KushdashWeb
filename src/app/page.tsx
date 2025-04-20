@@ -72,11 +72,10 @@ export default function Home() {
   }, [selectedPlayer])
   
   useEffect(() => {
-    var playerId = 31//;
-    setRealPlayerId(playerId);
+    setRealPlayerId(Math.floor(Math.random() * (players.length - 0 + 1) + 1));
     // When the players is received successfully.
     const InitialGuess = async (team_id: number) => {
-      const response = await fetch(`${API_URL}InitialGuess?index=${playerId}&team=${team_id}`);
+      const response = await fetch(`${API_URL}InitialGuess?index=${realPlayerId}&team=${team_id}`);
       const data = await response.json();
       setRealPlayer(data);
     }

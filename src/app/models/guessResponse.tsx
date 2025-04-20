@@ -98,7 +98,7 @@ export function combineTeams(existTeam: string[], newTeam: string[]) {
                 // Already added
             }
             else{
-                var indexOfUnknownTeam = existTeam.indexOf("?");
+                const indexOfUnknownTeam = existTeam.indexOf("?");
                 if(indexOfUnknownTeam >= 0){
                     existTeam[indexOfUnknownTeam] = item;
                 }
