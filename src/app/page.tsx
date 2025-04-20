@@ -4,56 +4,100 @@ import Player from "./Components/Card/player";
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import { ComboboxDemo } from './Components/ComboBox';
-import { GuessedPlayer, GuessResponse, GuessTips, InitialGuess, InitialGuessedPlayer, InitialGuessTips, InitialRealPlayer, isEqualPlayers, PlayerSummary } from './models/guessResponse';
+import { combineTeams, GuessedPlayer, GuessResponse, GuessTips, InitialGuess, InitialGuessedPlayer, InitialGuessTips, InitialRealPlayer, isEqualPlayers, PlayerSummary } from './models/guessResponse';
+import ThemeToggle from './Components/ThemeToggle';
+import ErrorAlert from './Components/ErrorAlert/errorAlert';
 
-const API_URL = "https://localhost:7122/TransferMarkt/";
+const API_URL = "https://sezgpmgxuc.us-west-2.awsapprunner.com";
+const INITIAL_GUESS_COUNT = 8;
+
+
+
+const getTeamCode = (teamName: string) => {
+  return teamName === "Fenerbahce" ? 0 : 1;
+}
+
 
 export default function Home() {
   const [realPlayerId, setRealPlayerId] = useState(0);
   const [players, setPlayers] = useState<PlayerSummary[]>([]);
+  const [fenerPlayers, setFenerPlayers] = useState<PlayerSummary[]>([]);
+  const [besiktasPlayers, setBesiktasPlayers] = useState<PlayerSummary[]>([]);
   const [isSucceed, setIsSucceed] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState("")
   const [guessTips, setGuessTips] = useState<GuessTips>(InitialGuessTips)
   const [guessedPlayers, setGuessPlayers] = useState<GuessResponse[]>([]);
   const [realPlayer, setRealPlayer] = useState<GuessedPlayer>(InitialRealPlayer);
+  const [team, setTeam] = useState<string>("Fenerbahce");
   const [guess, setGuess] = useState<GuessResponse>({
     guessed: InitialGuess,
     guessedPlayer: InitialGuessedPlayer
   });
+  const [score,setScore] = useState(0);
+  const [remain, setRemain] = useState(INITIAL_GUESS_COUNT);
 
   useEffect(() => {
-    const GetAllPlayers = async () => {
-      const response = await fetch(`${API_URL}GetAllPlayers`);
+    const GetAllPlayers = async (team_id: number) => {
+      const response = await fetch(`${API_URL}GetAllPlayers?team=${team_id}`);
       const data = await response.json();
       setPlayers(data);
+      if(team_id === 0){
+        setFenerPlayers(data);
+      }else{
+        setBesiktasPlayers(data);
+      }
     }
-    GetAllPlayers();
-    
-  }, [])
+    if(team === "Fenerbahce" && fenerPlayers.length > 0){
+      setPlayers(fenerPlayers);
+    }else if(team === "Besiktas" && besiktasPlayers.length > 0){
+      setPlayers(besiktasPlayers);
+    }else{
+      GetAllPlayers(getTeamCode(team));
+    }
+    },[team]);
 
   useEffect(() => {
-    const GuessApi = async (playerId: number, index: number) => {
-      const response = await fetch(`${API_URL}Guess?playerId=${playerId}&index=${index}`);
+    const GuessApi = async (playerId: number, index: number, team_id: number) => {
+      const response = await fetch(`${API_URL}Guess?playerId=${playerId}&index=${index}&team=${team_id}`);
       const data = await response.json();
       setGuess(data);
     }
     if(selectedPlayer !== ""){
       const selectedPlayerToGuess = players.find(obj => obj.name === selectedPlayer)
       if(selectedPlayerToGuess){
-        GuessApi(selectedPlayerToGuess.id, realPlayerId);
+        GuessApi(selectedPlayerToGuess.id, realPlayerId, getTeamCode(team));
       }
     }  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPlayer])
   
   useEffect(() => {
-    setRealPlayerId(Math.floor(Math.random() * (players.length - 0 + 1) + 1));
+    var playerId = 31//;
+    setRealPlayerId(playerId);
+    // When the players is received successfully.
+    const InitialGuess = async (team_id: number) => {
+      const response = await fetch(`${API_URL}InitialGuess?index=${playerId}&team=${team_id}`);
+      const data = await response.json();
+      setRealPlayer(data);
+    }
+    InitialGuess(getTeamCode(team));
   },[players])
 
   useEffect(() => {
     if(guess.guessedPlayer.name !== ""){
-      setGuessPlayers(prevGuesses => [...prevGuesses, guess]);
+      setGuessPlayers(prevGuesses => [guess, ...prevGuesses]);
       const isSuccess = isEqualPlayers(guess.guessed);
+      if(isSuccess){
+        setScore(score + 1);
+      }
+      else{
+      if(guess.guessedPlayer.age != 0){
+        setRemain(remain - 1);
+
+      }
+    }
       setIsSucceed(isSuccess)
+      
       setRealPlayer(prev => ({
         ...prev,
         age: guess.guessed.age === 0 ? guess.guessedPlayer.age : realPlayer.age,
@@ -64,7 +108,8 @@ export default function Home() {
         nationality: isSuccess ? guess.guessedPlayer.nationality : realPlayer.nationality,
         matchs: guess.guessed.matchs === 0 ? guess.guessedPlayer.matchs : realPlayer.matchs,
         scores: guess.guessed.scores === 0 ? guess.guessedPlayer.scores : realPlayer.scores,
-        asists: guess.guessed.asists === 0 ? guess.guessedPlayer.asists : realPlayer.asists
+        asists: guess.guessed.asists === 0 ? guess.guessedPlayer.asists : realPlayer.asists,
+        teams: realPlayer.teams !== null ? combineTeams(realPlayer.teams, guess.guessed.teams) : guess.guessed.teams
       }))
       setGuessTips(prev => {
         const { guessed, guessedPlayer } = guess;
@@ -117,31 +162,32 @@ export default function Home() {
 
 
     }
+    
   }, [guess])
 
   
 
   return (
-        <div className="container">
-          <Player guessResponse={realPlayer} guessTips={guessTips}></Player>
-          
-          <div className='submit'>
-            <div className='dropdown'>
-            <ComboboxDemo players = {players} setSelectedPlayer={setSelectedPlayer} isSucceed={isSucceed}></ComboboxDemo>
-            </div>
-            <Button className="bg-blue-900 text-yellow-300 hover:bg-blue-800">
-            Give up
-          </Button>
+     (
+      <div className="container">
+        {(!isSucceed && remain === 0) &&<ErrorAlert message="Belki de Galatasarayli olma zamanin gelmistir"/>}
+        <Player guessResponse={realPlayer} guessTips={guessTips} remainingGuesses={remain} correctGuesses={score}></Player>
+        <div className='submit'>
+          <div className='dropdown'>
+            <ComboboxDemo players={players} setSelectedPlayer={setSelectedPlayer} isSucceed={(isSucceed) || (remain <= 0)}></ComboboxDemo>
           </div>
-          <div className='rowPlayers'>
+          <Button className="bg-blue-900 text-yellow-300 hover:bg-blue-800">Give up</Button>
+        </div>
+        <div className='rowPlayers'>
           {guessedPlayers.map((guess, index) => {
             return(
-            <Player key={index} guessTips={null} guessResponse={guess.guessedPlayer}></Player>
-          )})}
-          </div>
-          
+              <Player key={index} guessTips={null} guessResponse={guess.guessedPlayer}></Player>
+            )
+          })}
+        </div>
+        <ThemeToggle isFenerMode={setTeam}/>
       </div>
-      
+    ) 
   );
 }
 

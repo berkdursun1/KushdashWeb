@@ -4,7 +4,7 @@
     border-radius: 12px;
     box-shadow: 0 8px 32px rgba(4, 30, 66, 0.3);
     padding: 16px;
-    width: 350px;
+    width: 400px;
     transition: all 0.3s ease;
     height: fit-content;
     position: relative;
@@ -270,6 +270,16 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+[data-theme="dark"] .inputField {
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    background: linear-gradient(135deg, #FFFFFF 0%, #F0F0F0 100%);
+    color: #000000;
+}
+
+[data-theme="dark"] .inputField:hover {
+    background: linear-gradient(135deg, #F0F0F0 0%, #FFFFFF 100%);
+}
+
 .photoBorder {
     display: flex;
     background-color: rgba(255, 229, 0, 0.1);
@@ -311,5 +321,174 @@
         font-size: 0.85em;
         padding: 4px 6px;
     }
+}
+
+/* Fenerbahçe Modu (Light Mode) */
+[data-theme="light"] .leadCard {
+    background: linear-gradient(135deg, #041E42 0%, #0A2850 85%, #0F3366 100%);
+    box-shadow: 0 8px 32px rgba(4, 30, 66, 0.3);
+}
+
+[data-theme="light"] .leadCard::before {
+    background: radial-gradient(circle at top right, rgba(255, 229, 0, 0.08), transparent 60%);
+}
+
+[data-theme="light"] .playerCard {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border: 1px solid rgba(255, 229, 0, 0.15);
+}
+
+[data-theme="light"] .playerCard::after {
+    background: linear-gradient(90deg, rgba(255, 229, 0, 0.1), transparent 50%, rgba(255, 229, 0, 0.1));
+}
+
+[data-theme="light"] .playerPhoto {
+    border: 2px solid #FFE500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .nullPlayerPhoto {
+    background: linear-gradient(135deg, rgba(255, 229, 0, 0.1) 0%, rgba(255, 229, 0, 0.05) 100%);
+    color: #FFE500;
+    border: 2px solid rgba(255, 229, 0, 0.5);
+}
+
+[data-theme="light"] .playerName {
+    color: #FFE500;
+}
+
+[data-theme="light"] .labelText {
+    color: #8B9CB3;
+}
+
+[data-theme="light"] .playerPosition {
+    color: #041E42;
+    background-color: #FFE500;
+}
+
+[data-theme="light"] .statsLabel {
+    color: #8B9CB3;
+}
+
+[data-theme="light"] .playerStats {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 229, 0, 0.15);
+}
+
+[data-theme="light"] .playerStats::after {
+    background: radial-gradient(circle at center, rgba(255, 229, 0, 0.03), transparent 70%);
+}
+
+[data-theme="light"] .statItem {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+[data-theme="light"] .statLabel {
+    color: #8B9CB3;
+}
+
+[data-theme="light"] .statValue {
+    color: #FFE500;
+}
+
+/* Beşiktaş Modu (Dark Mode) */
+[data-theme="dark"] .leadCard {
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 85%, #333333 100%);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .leadCard::before {
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 60%);
+}
+
+[data-theme="dark"] .playerCard {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] .playerCard::after {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent 50%, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .playerPhoto {
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .nullPlayerPhoto {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    color: #FFFFFF;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="dark"] .playerName {
+    color: #FFFFFF;
+}
+
+[data-theme="dark"] .labelText {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="dark"] .playerPosition {
+    color: #000000;
+    background-color: #FFFFFF;
+}
+
+[data-theme="dark"] .statsLabel {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="dark"] .playerStats {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] .playerStats::after {
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.03), transparent 70%);
+}
+
+[data-theme="dark"] .statItem {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+[data-theme="dark"] .statLabel {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="dark"] .statValue {
+    color: #FFFFFF;
+}
+
+.guessStats {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 12px;
+    z-index: 2;
+}
+
+.guessStatItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 229, 0, 0.1);
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 229, 0, 0.2);
+    min-width: 60px;
+}
+
+.guessStatLabel {
+    font-size: 0.75em;
+    color: #8B9CB3;
+    margin-bottom: 2px;
+}
+
+.guessStatValue {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #FFE500;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
   

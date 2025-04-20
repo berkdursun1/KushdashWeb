@@ -90,3 +90,20 @@ export const InitialRealPlayer: GuessedPlayer = {
 export function isEqualPlayers(guess: Guess){
     return guess.age === 0 && guess.foot && guess.nationality && guess.position;
 }
+
+export function combineTeams(existTeam: string[], newTeam: string[]) {
+    newTeam.forEach((item) => {
+        if(item !== "?"){
+            if(existTeam.includes(item)){
+                // Already added
+            }
+            else{
+                var indexOfUnknownTeam = existTeam.indexOf("?");
+                if(indexOfUnknownTeam >= 0){
+                    existTeam[indexOfUnknownTeam] = item;
+                }
+            }
+        }
+    })
+    return existTeam;
+}
