@@ -98,7 +98,7 @@ export default function Home() {
     if(guess.guessedPlayer.name !== ""){
       setGuessPlayers(prevGuesses => [guess, ...prevGuesses]);
       const isSuccess = isEqualPlayers(guess.guessed);
-      if(isSuccess){
+      if(!isSuccess){
         setRemain(remain - 1);
       }
       
@@ -171,7 +171,16 @@ export default function Home() {
     
   }, [guess])
 
-  
+  const giveUpRequest = async () => {
+    const response = await fetch(`${API_URL}RealPlayer?index=${realPlayerId}&team=${getTeamCode(team)}`);
+    const data = await response.json();
+    setRealPlayer(data);
+    console.log(data);
+  }
+
+  const giveUp = () => {
+    giveUpRequest();
+  }  
 
   return (
      (
@@ -182,7 +191,7 @@ export default function Home() {
           <div className='dropdown'>
             <ComboboxDemo players={players} setSelectedPlayer={setSelectedPlayer} isSucceed={(remain <= 0)}></ComboboxDemo>
           </div>
-          <Button className="bg-blue-900 text-yellow-300 hover:bg-blue-800">Give up</Button>
+          <Button className="bg-blue-900 text-yellow-300 hover:bg-blue-800" onClick={giveUp}>Give up</Button>
         </div>
         <div className='rowPlayers'>
           {guessedPlayers.map((guess, index) => {
