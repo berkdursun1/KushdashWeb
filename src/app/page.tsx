@@ -8,7 +8,7 @@ import { combineTeams, GuessedPlayer, GuessResponse, GuessTips, InitialGuess, In
 import ThemeToggle from './Components/ThemeToggle';
 import ErrorAlert from './Components/ErrorAlert/errorAlert';
 
-const API_URL = "https://sezgpmgxuc.us-west-2.awsapprunner.com";
+const API_URL = "https://sezgpmgxuc.us-west-2.awsapprunner.com/";
 const INITIAL_GUESS_COUNT = 8;
 
 
