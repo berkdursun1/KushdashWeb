@@ -44,7 +44,7 @@ export function ComboboxDemo({players, setSelectedPlayer, isSucceed} : {players 
         <Command>
           <CommandInput placeholder="Search player..." />
           <CommandList>
-            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandEmpty>No player found.</CommandEmpty>
             <CommandGroup>
               {players.map((player) => (
                 <CommandItem
