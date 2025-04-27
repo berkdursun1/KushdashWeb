@@ -8,7 +8,7 @@ import { combineTeams, GuessedPlayer, GuessResponse, GuessTips, InitialGuess, In
 import ThemeToggle from './Components/ThemeToggle';
 import ErrorAlert from './Components/ErrorAlert/errorAlert';
 
-const API_URL = "https://sezgpmgxuc.us-west-2.awsapprunner.com/TransferMarkt/";
+const API_URL = "http://ec2-54-190-192-24.us-west-2.compute.amazonaws.com:5000/TransferMarkt/";
 const INITIAL_GUESS_COUNT = 8;
 
 
@@ -80,7 +80,9 @@ export default function Home() {
       const data = await response.json();
       setRealPlayer(data);
     }
-    InitialGuess(getTeamCode(team));
+    if(players.length > 0) {
+      InitialGuess(getTeamCode(team));
+    }  
   },[players])
 
   useEffect(() => {
@@ -196,7 +198,9 @@ export default function Home() {
         <div className='rowPlayers'>
           {guessedPlayers.map((guess, index) => {
             return(
+              <div style={{height: "100%"}}>
               <Player key={index} guessTips={null} guessResponse={guess.guessedPlayer}></Player>
+              </div>
             )
           })}
         </div>
