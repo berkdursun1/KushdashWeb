@@ -8,7 +8,7 @@ import { combineTeams, GuessedPlayer, GuessResponse, GuessTips, InitialGuess, In
 import ThemeToggle from './Components/ThemeToggle';
 import ErrorAlert from './Components/ErrorAlert/errorAlert';
 
-const API_URL = "http://ec2-54-190-192-24.us-west-2.compute.amazonaws.com:5000/TransferMarkt/";
+const API_URL = "https://api.kushdash.net/TransferMarkt/";
 const INITIAL_GUESS_COUNT = 8;
 
 
@@ -198,7 +198,7 @@ export default function Home() {
         <div className='rowPlayers'>
           {guessedPlayers.map((guess, index) => {
             return(
-              <div style={{height: "100%"}}>
+              <div key={index} style={{height: "100%"}}>
               <Player key={index} guessTips={null} guessResponse={guess.guessedPlayer}></Player>
               </div>
             )
